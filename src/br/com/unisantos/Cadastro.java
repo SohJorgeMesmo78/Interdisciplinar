@@ -98,17 +98,17 @@ public class Cadastro {
 		lbl_nome3.setBounds(123, 184, 45, 13);
 		frame.getContentPane().add(lbl_nome3);
 		
-		JLabel lbl_sexoNome1 = new JLabel("0%");
+		JLabel lbl_sexoNome1 = new JLabel("--");
 		lbl_sexoNome1.setForeground(Color.WHITE);
 		lbl_sexoNome1.setBounds(298, 104, 96, 13);
 		frame.getContentPane().add(lbl_sexoNome1);
 		
-		JLabel lbl_sexoNome2 = new JLabel("0%");
+		JLabel lbl_sexoNome2 = new JLabel("--");
 		lbl_sexoNome2.setForeground(Color.WHITE);
 		lbl_sexoNome2.setBounds(298, 144, 96, 13);
 		frame.getContentPane().add(lbl_sexoNome2);
 		
-		JLabel lbl_sexoNome3 = new JLabel("0%");
+		JLabel lbl_sexoNome3 = new JLabel("--");
 		lbl_sexoNome3.setForeground(Color.WHITE);
 		lbl_sexoNome3.setBounds(298, 184, 96, 13);
 		frame.getContentPane().add(lbl_sexoNome3);
@@ -117,21 +117,36 @@ public class Cadastro {
 		btn_predizer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				if(	txt_nome1.getText()==null || txt_nome1.getText().trim().equals(""))
-				{
+				String[] nomes = new String[3];
+				JLabel[] labels = {lbl_sexoNome1, lbl_sexoNome2, lbl_sexoNome3};
+				
+				if(	txt_nome1.getText() == null || txt_nome1.getText().trim().equals("")) {
 					lbl_sexoNome1.setText("Digite algo");
+					return;
 				}
+				nomes[0] = txt_nome1.getText();
 				
-				if(	txt_nome2.getText()==null || txt_nome2.getText().trim().equals(""))
-				{
+				if(	txt_nome2.getText() == null || txt_nome2.getText().trim().equals("")) {
 					lbl_sexoNome2.setText("Digite algo");
+					return;
 				}
+				nomes[1] = txt_nome2.getText();
 				
-				if(	txt_nome3.getText()==null || txt_nome3.getText().trim().equals(""))
-				{
+				if(	txt_nome3.getText() == null || txt_nome3.getText().trim().equals("")) {
 					lbl_sexoNome3.setText("Digite algo");
+					return;
 				}
-					
+				nomes[2] = txt_nome3.getText();
+				
+				for (int i = 0; i < 3; i++) {
+					ClientAPI ca = new ClientAPI();
+					try {
+						String genero = ca.getGenero(nomes[i]);
+						labels[i].setText(genero);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
 			}
 		});
 		btn_predizer.setBounds(113, 234, 330, 21);
